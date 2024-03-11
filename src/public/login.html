@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Iniciar sesion</title>
+    <style>
+        h1 {
+            font-family: 'Arial', sans-serif; 
+            color: #bfb6ff;
+            text-align: center; 
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F5F5DC;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            background-color: #DCD6D0;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        form input[type="text"], form input[type="password"] {
+            width: 95%;
+            border: none;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        form button {
+            width: 98%;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #B0A999;
+            color: #fff;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body> 
+    <div class="container">
+    <h1>Bienvenido a la página de inicio de sesión</h1>
+    <form id="login-form">
+    <input type="text" id="username" placeholder="Nombre de usuario" required>
+    <input type="password" id="password" placeholder="Contraseña" required>
+    <button type="submit">Inicia sesion</button>
+</form>
+
+<script>
+    var loginForm = document.getElementById('login-form')
+    var usernameInput = document.getElementById('username')
+    var passwordInput = document.getElementById('password')
+
+    loginForm.addEventListener('submit', function(e) {
+        e.preventDefault()
+
+        var username = usernameInput.value
+        var password = passwordInput.value
+
+        fetch('/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username: username, password: password })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                alert(data.message)
+                if (data.message === 'Inicio de sesion exitoso') {
+                    localStorage.setItem('authToken', data.authToken)
+                    window.location.href = '/chat.html'
+                }
+            } else {
+             console.error(data)
+            }
+        })
+        .catch((error) => {
+            console.log('Error', error)
+        })
+    })
+</script>
+</div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Página Principal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F5F5DC;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        h1 {
+            font-family: 'Arial', sans-serif;
+            color: #bfb6ff;
+            text-align: center;
+        }
+        a {
+            display: block;
+            width: 200px;
+            height: 50px;
+            background-color: #B0A999;
+            color: #fff;
+            text-align: center;
+            line-height: 50px;
+            margin: 10px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Bienvenido a nuestra aplicación de chat</h1>
+    <a href="/login.html">Iniciar Sesión</a>
+    <a href="/register.html">Registrarse</a>
+    <a href="/chat.html">Chat</a>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+</script>
+</body>
+</html>
