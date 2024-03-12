@@ -10,6 +10,7 @@ import http from 'http'
 const users: { [key: string]: any } = {}
 
 export class IServer {
+
     private app: Express
     private io: Server
     private httpServer: http.Server
@@ -31,6 +32,11 @@ export class IServer {
         this.app.use(express.json())
         this.app.use(express.urlencoded({ extended:true }))
         this.app.use(express.static(path.join(__dirname, 'public')))
+
+        this.app.use((req, res, next) => {
+            res.setHeader('Content-Type', 'text/html; charset=utf-8');
+            next();
+        })
 
         this.app.use(async (err: any, req: any, res: any, next: any) => {
             await ErrorReportingService.reportError(err)
