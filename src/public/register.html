@@ -44,7 +44,7 @@
             border-radius: 5px;
             background-color: #B0A999;
             color: #fff;
-            cursor: pointer;
+            cursor: pointer
         }
     </style>
     <script src="/socket.io/socket.io.js"></script>
@@ -52,7 +52,7 @@
 <body> 
     <div class="container">
     <h1>Bienvenido a la página de registro</h1>
-    <form id="registerForm" action="/user/register" method="POST">
+    <form id="registerForm" action="/api/user/register" method="POST">
         <label for="usuario">Usuario:</label>
         <input type="text" id="usuario" name="usuario" required minlength="4" maxlength="20">
         <br>
@@ -74,28 +74,38 @@
 </div>
 <script>
     window.onload = function() {
-        var socket = io();
+        var socket = io()
 
         document.getElementById('registerForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+            e.preventDefault()
 
-            var usuario = document.getElementById('usuario').value;
-            var password = document.getElementById('password').value;
-            var firstName = document.getElementById('firstName').value;
-            var lastName = document.getElementById('lastName').value;
-            var age = document.getElementById('age').value;
+            var usuario = document.getElementById('usuario').value
+            var password = document.getElementById('password').value
+            var firstName = document.getElementById('firstName').value
+            var lastName = document.getElementById('lastName').value
+            var age = document.getElementById('age').value
 
-            socket.emit('new user', { usuario, password, firstName, lastName, age });
-        });
-
-        socket.on('user created', function() {
-            alert('Usuario creado exitosamente');
-        });
-
-        socket.on('error', function(err) {
-            alert('Ocurrió un error: ' + err);
-        });
-    };
+            fetch('/api/user/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ usuario, password, firstName, lastName, age }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert('Ocurrio un error: ' + data.error)
+                } else {
+                    alert('Usuario creado exitosamente')
+                }
+            })
+            .catch((error) => {
+                console.log('Error:', error)
+            })
+        })
+    }
 </script>
+<script src="/socket.io/socket.io.js"></script>
 </body>
 </html>

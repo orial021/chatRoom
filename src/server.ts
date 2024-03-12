@@ -17,12 +17,13 @@ export class IServer {
 
     constructor() {
         this.app = express()
-        this.io = new Server()
+        this.httpServer = http.createServer(this.app)
+        this.io = new Server(this.httpServer)
         this.configuration()
         this.middlewares()
         this.setupSocketIO()
-        this.httpServer = http.createServer(this.app)
-        this.io = new Server(this.httpServer)
+        
+      
     }
     configuration() {
         this.app.set('port', config.PORT)
@@ -34,8 +35,8 @@ export class IServer {
         this.app.use(express.static(path.join(__dirname, 'public')))
 
         this.app.use((req, res, next) => {
-            res.setHeader('Content-Type', 'text/html; charset=utf-8');
-            next();
+            res.setHeader('Content-Type', 'text/html; charset=utf-8')
+            next()
         })
 
         this.app.use(async (err: any, req: any, res: any, next: any) => {
@@ -53,7 +54,7 @@ export class IServer {
 
     private setupSocketIO() {
         this.io.on('connection', (socket) => {
-            console.log('Un usuario se ha conectaqdo')
+            console.log('Un usuario se ha conectado')
 
             socket.on('new user', async (userData) => {
                 try {
@@ -95,4 +96,4 @@ export class IServer {
 }
 
 
-export const Io: Server = new Server()
+
