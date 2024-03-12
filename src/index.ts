@@ -22,16 +22,17 @@ createConnection({
     type: "postgres",
     host: "localhost",
     port: 5432,
-    username: "test",
-    password: "test",
-    database: "test",
+    username: "postgres",
+    password: "2354",
+    database: "practicas",
     entities: [
-        "src/entity/**/*.ts"
-    ],
+        "src/entity/**/*.ts"],
     synchronize: true,
-}).then(async connection => {
+})
+.then(async connection => {
     server.listen()
-}).catch(error => {
+})
+.catch(error => {
     console.error('Error al conectar a la base de datos', error)
     process.exit(1)
 })

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import ChatRoomService from '../Service/ChatRoomService'
+import ErrorReportingService from '../Service/ErrorReportService'
 
 export default class ChatRoomController {
     static getAllChatRooms = async (req: Request, res: Response) => {
@@ -8,9 +9,11 @@ export default class ChatRoomController {
             res
             .json(chatRooms)
         } catch (error) {
+            await ErrorReportingService
+            .reportError(error)
             res
             .status(500)
-            .json({ error: (error as any).toString() })
+            .json({ error: 'Ha ocurrido un error' })
         }
     }
 
@@ -26,9 +29,11 @@ export default class ChatRoomController {
                 .json({ error: 'Sala de chat no encontrada' })
             }
         } catch (error) {
-            res
+            await ErrorReportingService
+            .reportError(error)
+             res
             .status(500)
-            .json({ error: (error as any).toString() })
+            .json({ error: 'Ha ocurrido un error' })
         }
     }
 
@@ -38,9 +43,11 @@ export default class ChatRoomController {
             res
             .json(newChatRoom)
         } catch (error) {
+            await ErrorReportingService
+            .reportError(error)
             res
             .status(500)
-            .json({ error: (error as any).toString() })
+            .json({ error: 'Ha ocurrido un error' })
         }
     }
 
@@ -56,9 +63,11 @@ export default class ChatRoomController {
                 .json({ error: 'Sala de chat no encontrada' })
             }
         } catch (error) {
+            await ErrorReportingService
+            .reportError(error)
             res
             .status(500)
-            .json({ error: (error as any).toString() })
+            .json({ error: 'Ha ocurrido un error' })
         }
     }
 }

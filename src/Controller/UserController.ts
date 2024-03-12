@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import { getRepository } from "typeorm"
 import { User } from "../Entity/UserEntity"
 import * as bcrypt from 'bcrypt'
+import ErrorReportingService from "../Service/ErrorReportService"
 
 export async function createUser(req: Request, res: Response) {
   try{
@@ -19,11 +20,10 @@ export async function createUser(req: Request, res: Response) {
     res
     .send(result)
 } catch (error) {
-    console
-    .error(error)
+    await ErrorReportingService.reportError(error);
     res
     .status(500)
-    .send("Ocurrió un error al crear el usuario")
+    .json({ error: 'Ocurrio un error al crear el usuario' })
 }
 }
 
@@ -50,9 +50,9 @@ export async function loginUser(req: Request, res: Response) {
         .send("Usuario no encontrado")
     }
     } catch (error) {
-        console.error(error)
-        res
-        .status(500)
-        .send("Ocurrió un error al iniciar sesión")
+        await ErrorReportingService.reportError(error);
+    res
+    .status(500)
+    .json({ error: 'Ocurrio un error al iniciar sesion' })
     }
 }

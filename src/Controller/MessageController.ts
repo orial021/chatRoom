@@ -1,84 +1,70 @@
-import express from 'express'
+import { Request, Response } from 'express'
 import MessageService from '../Service/MessageService'
+import ErrorReportingService from '../Service/ErrorReportService'
 
-const router = express.Router()
-
-router.get('/', async (req, res) => {
-    try {
-        const messages = await MessageService.getAllMessages()
-        res
-        .json(messages)
-    } catch (error) {
-        res
-        .status(500)
-        .json({ error: (error as any).toString() })
-    }
-})
-
-router.get('/:id', async (req, res) => {
-    try {
-        const message = await MessageService.getMessage(req.params.id)
-        if (message) {
+export default class MessageController {
+    static getAllMessages = async (req: Request, res: Response) => {
+        try {
+            const messages = await MessageService.getAllMessages()
+            res.json(messages)
+        } catch (error) {
+            await ErrorReportingService.reportError(error)
             res
-            .json(message)
-        } else {
-            res
-            .status(404)
-            .json({ error: 'Mensaje no encontrado' })
+            .status(500)
+            .json({ error: 'Ha ocurrido un error' })
         }
-    } catch (error) {
-        res
-        .status(500)
-        .json({ error: (error as any).toString() })
     }
-})
 
-router.post('/', async (req, res) => {
-    try {
-        const { userId, chatRoomId, content } = req.body;
-        const newMessage = await MessageService.createMessage(userId, chatRoomId, content)
-        res
-        .json(newMessage)
-    } catch (error) {
-        res
-        .status(500)
-        .json({ error: (error as any).toString() })
-    }
-})
-
-router.put('/:id', async (req, res) => {
-    try {
-        const { content } = req.body
-        const updatedMessage = await MessageService.updateMessage(req.params.id, content)
-        if (updatedMessage) {
+    static getMessage = async (req: Request, res: Response) => {
+        try {
+            const message = await MessageService.getMessage(req.params.id)
+            if (message) {
+                res
+                .json(message)
+            } else {
+                res
+                .status(404)
+                .json({ error: 'Mensaje no encontrado' })
+            }
+        } catch (error) {
+            await ErrorReportingService.reportError(error)
             res
-            .json(updatedMessage)
-        } else {
-            res
-            .status(404)
-            .json({ error: 'Mensaje no encontrado' })
+            .status(500)
+            .json({ error: 'Ha ocurrido un error' })
         }
-    } catch (error) {
-        res
-        .status(500)
-        .json({ error: (error as any).toString() })
     }
-})
 
-router.delete('/:id', async (req, res) => {
-    try {
-        const success = await MessageService.deleteMessage(req.params.id)
-        if (success) {
-            res.json({ message: 'Mensaje eliminado con éxito' })
-        } else {
+    static createMessage = async (req: Request, res: Response) => {
+        try {
+            const { userId, chatRoomId, content } = req.body
+            const newMessage = await MessageService.createMessage(userId, chatRoomId, content)
             res
-            .status(404).json({ error: 'Mensaje no encontrado' })
+            .json(newMessage)
+        } catch (error) {
+            await ErrorReportingService
+            .reportError(error)
+            res
+            .status(500)
+            .json({ error: 'Ha ocurrido un error' })
         }
-    } catch (error) {
-        res
-        .status(500)
-        .json({ error: (error as any).toString() })
     }
-})
 
-export default router
+    static deleteMessage = async (req: Request, res: Response) => {
+        try {
+            const success = await MessageService.deleteMessage(req.params.id)
+            if (success) {
+                res
+                .json({ message: 'Mensaje eliminado con éxito' })
+            } else {
+                res
+                .status(404)
+                .json({ error: 'Mensaje no encontrado' })
+            }
+        } catch (error) {
+            await ErrorReportingService.reportError(error)
+            res
+            .status(500)
+            .json({ error: 'Ha ocurrido un error' })
+        }
+    }
+}

@@ -1,5 +1,5 @@
 import { getRepository } from 'typeorm';
-import { ErrorReport } from '../entity/ErrorReportEntity';
+import { ErrorReport } from '../Entity/ErrorReportEntity';
 
 class ErrorReportingService {
     static reportError = async (error: any): Promise<void> => {

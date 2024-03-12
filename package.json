@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/index.ts --watch src --watch *.html",
     "start": "nodemon --watch src --watch *.html --exec ts-node src/server.ts",
-    "migrate": "ts-node ./node_modules/typeorm/cli.js migration:run",
+    "migrate": "ts-node ./node_modules/typeorm/cli.js migration:run -d ./src/data-source.ts ",
     "mi:g": "ts-node ./node_modules/typeorm/cli.js migration:create"
   },
   "keywords": [],
