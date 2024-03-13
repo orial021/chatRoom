@@ -42,7 +42,7 @@ export async function loginUser(req: Request, res: Response) {
         } else {
             res
             .status(401)
-            .send("Contraseña incorrecta")
+            .json({ error: "Contraseña incorrecta" })
         }
     } else {
         res

@@ -5,8 +5,10 @@ import path from 'path'
 const router = express.Router()
 
 router.get('/register', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'register.html'))
-})
+    res.sendFile(path.join(__dirname, '..', 'public', 'register.html'))})
+router.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'public', 'login.html'))})
+    
 router.post('/register', createUser)
 router.post('/login', loginUser)
 

@@ -79,24 +79,23 @@
             },
             body: JSON.stringify({ username: username, password: password })
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => {throw err;})
+            }
+            return response.json()
+        })
         .then(data => {
-            if (data.message) {
-                alert(data.message)
-                if (data.error) {
-                    alert('Ocurrio un error: ' + data.eror)
-                } else {
-                 alert(data.message === 'Inicio de sesion exitoso') 
+                 alert(data.message) 
                     localStorage.setItem('authToken', data.authToken)
                     window.location.href = '/chat.html'
-                }
-            }
-    })
-        .catch((error) => {
-            console.log('Error', error)
         })
-    })
-}
+        .catch((error) => {
+            console.error('Error', error)
+            alert(error.error)
+        })
+        })
+    }
     
 </script>
 <script src="/socket.io/socket.io.js"></script>

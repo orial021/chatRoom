@@ -37,9 +37,13 @@ public async updateUser(id: string, userData: Partial<User>) {
 public async createUser(userData: Partial<User>) {
     const userRepository = getRepository(User)
 
+    if (!userData.usuario || !userData.password){
+        throw new Error('Usuario y contraseña son requeridos')
+    }
+
     let user = new User()
-    user.usuario = req.body.usuario
-    user.password = req.body.password
+    user.usuario = userData.usuario
+    user.password = userData.password
     
 
     return await userRepository.save(user)
