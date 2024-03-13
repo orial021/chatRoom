@@ -36,8 +36,8 @@ export class User {
 
     @BeforeInsert()
     @BeforeUpdate()
-    async setPassword(password: string) {
-        this.password = await bcrypt.hash(password, 10)
+    async hashPassword() {
+        this.password = await bcrypt.hash(this.password, 10)
     }
 
     @OneToMany(() => Message, message => message.user)

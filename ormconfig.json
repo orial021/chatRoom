@@ -9,16 +9,16 @@
     "dataSource": "./src/data-source.ts",
     "logging": false,
     "entities": [
-       "./src/entity/*.ts"
+       "./src/Entity/**/*.ts"
     ],
     "migrations": [
-       "./src/migration/*.ts"
+       "./src/migration/**/*.ts"
     ],
     "subscribers": [
        "./src/subscriber/**/*.ts"
     ],
     "cli": {
-       "entitiesDir": "./src/entity",
+       "entitiesDir": "./src/Entity",
        "migrationsDir": "./src/migration",
        "subscribersDir": "./src/subscriber"
     }

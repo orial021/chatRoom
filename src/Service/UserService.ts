@@ -38,7 +38,9 @@ public async createUser(userData: Partial<User>) {
     const userRepository = getRepository(User)
 
     let user = new User()
-    Object.assign(user, userData)
+    user.usuario = req.body.usuario
+    user.password = req.body.password
+    
 
     return await userRepository.save(user)
 }

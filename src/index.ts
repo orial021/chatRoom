@@ -26,7 +26,7 @@ createConnection({
     password: "2354",
     database: "practicas",
     entities: [
-        "src/entity/**/*.ts"],
+        "src/Entity/**/*.ts"],
     synchronize: true,
 })
 .then(async connection => {
