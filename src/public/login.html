@@ -46,6 +46,7 @@
         }
 
     </style>
+    <script src="/socket.io/socket.io.js"></script>
 </head>
 <body> 
     <div class="container">
@@ -57,17 +58,21 @@
 </form>
 
 <script>
+    window.onload = function() {
+        var socket = io()
+
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault()
+
+        
     var loginForm = document.getElementById('login-form')
     var usernameInput = document.getElementById('username')
     var passwordInput = document.getElementById('password')
 
-    loginForm.addEventListener('submit', function(e) {
-        e.preventDefault()
-
         var username = usernameInput.value
         var password = passwordInput.value
 
-        fetch('/auth/login', {
+        fetch('/api/user/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -78,19 +83,23 @@
         .then(data => {
             if (data.message) {
                 alert(data.message)
-                if (data.message === 'Inicio de sesion exitoso') {
+                if (data.error) {
+                    alert('Ocurrio un error: ' + data.eror)
+                } else {
+                 alert(data.message === 'Inicio de sesion exitoso') 
                     localStorage.setItem('authToken', data.authToken)
                     window.location.href = '/chat.html'
                 }
-            } else {
-             console.error(data)
             }
-        })
+    })
         .catch((error) => {
             console.log('Error', error)
         })
     })
+}
+    
 </script>
+<script src="/socket.io/socket.io.js"></script>
 </div>
 </body>
 </html>

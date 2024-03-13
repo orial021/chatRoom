@@ -98,6 +98,7 @@
                     alert('Ocurrio un error: ' + data.error)
                 } else {
                     alert('Usuario creado exitosamente')
+                    window.location.href = '/login.html'
                 }
             })
             .catch((error) => {
