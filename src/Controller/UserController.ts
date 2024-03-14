@@ -1,8 +1,9 @@
 import { Request, Response } from "express"
 import { getRepository } from "typeorm"
 import { User } from "../Entity/UserEntity"
-import * as bcrypt from 'bcrypt'
+import bcrypt from 'bcrypt'
 import ErrorReportingService from "../Service/ErrorReportService"
+import * as jwt from 'jsonwebtoken'
 
 export async function createUser(req: Request, res: Response) {
   try{
@@ -10,7 +11,7 @@ export async function createUser(req: Request, res: Response) {
 
     let user = new User()
     user.usuario = req.body.usuario
-    user.password = await bcrypt.hash(req.body.password, 10)
+    user.password = req.body.password
     user.firstName = req.body.firstName
     user.lastName = req.body.lastName
     user.age = req.body.age
@@ -34,11 +35,18 @@ export async function loginUser(req: Request, res: Response) {
     const user = await userRepository.findOne({ where: {usuario: req.body.usuario} })
 
     if (user) {
-        const passwordMatch = await bcrypt.compare(req.body.password, user.password)
+        console.log('Contrasena almacenada(hash):', user.password)
+
+        const passwordMatch = req.body.password
+
+        console.log('Contrasena ingresada(hash):', req.body.password)
+
 
         if (passwordMatch) {
+            const authToken = jwt.sign({ id: user.id }, 'tokenAuth', {expiresIn: '1h' })
             res
-            .send("Inicio de sesión exitoso")
+            .status(200)
+            .json({ message: 'Inicio de sesión exitoso', authToken: "tu_token_de_verificacion" })
         } else {
             res
             .status(401)

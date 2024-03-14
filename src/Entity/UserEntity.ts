@@ -1,5 +1,5 @@
 import {Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate, OneToMany} from "typeorm"
-import * as bcrypt from 'bcrypt'
+//import bcrypt  from 'bcrypt'
 import { IsNotEmpty, MinLength, MaxLength, IsInt, Min, Max } from 'class-validator'
 import { Message } from './MessageEntity'
 
@@ -34,11 +34,11 @@ export class User {
     @Max(99)
     age: number
 
-    @BeforeInsert()
+   /* @BeforeInsert()
     @BeforeUpdate()
     async hashPassword() {
         this.password = await bcrypt.hash(this.password, 10)
-    }
+    }*/
 
     @OneToMany(() => Message, message => message.user)
     messages: Message[]
